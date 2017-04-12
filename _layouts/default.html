@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
-
+    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }}</title>
     {% include meta.html %}
-
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
+    {% include ie.html %}
     <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
-
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.baseurl }}/feed.xml" />
+    {% if site.google_analytics %}
+    <link rel="dns-prefetch" href="google-analytics.com" />
+    {% endif %}
+    {% if site.disqus %}
+    <link rel="preconnect" href="//{{ site.disqus }}.disqus.com/embed.js" />
+    {% endif %}
     <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
   </head>
-
   <body>
     <div class="wrapper-masthead">
       <div class="container">

@@ -11,8 +11,14 @@
 <meta property="og:description" content="{{ site.description }}" />
 {% endif %}
 <meta name="author" content="{{ site.description }}" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="@kirill_g4s8" />
+<meta name="twitter:site" content="@kirill_g4s8" />
 {% if page.title %}
-<meta property="og:title" content="{{ page.title }}" />
-<meta property="twitter:title" content="{{ page.title }}" />
+<meta name="twitter:title" property="og:title" content="{{ page.title }}" />
+{% endif %}
+{% if page.image %}
+<meta name="twitter:image" content="{{ page.image }}" />
+<meta name="og:image" content="{{ page.image }}" />
 {% endif %}
 <!-- META-END -->

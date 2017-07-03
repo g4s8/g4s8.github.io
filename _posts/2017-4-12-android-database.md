@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Database
+title: Database (part one)
 ---
 
 
@@ -11,6 +11,11 @@ it was some [ORM and active-record](https://www.sitepoint.com/5-best-android-orm
 [ContentProvider's](https://developer.android.com/reference/android/content/ContentProvider.html),
 even some wrappers for native `.so` libraries.
 But with none of them I was satisfied.
+
+
+> This post is outdated! I understand a some problems related to
+> described approach. So I'm going to publish second part with corrections
+> when I figure out how to do it right.
 
 ## What's wrong with them?
 The main reason why I don't tolerate [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping)

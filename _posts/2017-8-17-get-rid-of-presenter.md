@@ -6,31 +6,31 @@ title: Get rid of presenter
 How to split platform depended views from domain logic and be able to
 unit-test them separately? There are few ways to do it, one of them is
 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter" target="_blank">MVP (Model-View-Presenter)</a>
-pattern. It give us many advantages in Android system but has one major drawback in OOP world - a presenter.
+pattern. It gives us many advantages in Android system but has one major drawback in OOP world - a presenter.
 
 ## Why to split?
 You probably know that it's not so easy to unit-test
 <a href="https://developer.android.com/reference/android/content/Context.html" target="_blank">context</a>
-dependend stuff like `Activity`, `View` etc. because this classes is a part of Android framework and 
+dependend stuff like `Activity`, `View` etc. because these classes are a part of Android framework and 
 they are loaded in runtime on device, each device may have different implementation of same classes. To test it you have to write
 <a href="https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests.html" target="_blank">Instrumentation tests</a>
-and launch it on real device or emulator, another option is to use a framework that simulates an Android-SDK e.g. a
+and launch them on real device or emulator, another option is to use a framework that simulates an Android-SDK e.g. a
 <a href="http://robolectric.org/">Robolectric framework</a>.
 This kind of tests is slow enough to run it on every build,
-therefore it's a good practies to keep our model independed of Android context to be able to write plain java
+therefore it's a good practice to keep our model independed of Android context to be able to write plain java
 <a href="http://junit.org/junit4/">JUnit</a> tests for it.<br/>
 
 ## Why MVP?
 Why do I choose this particular pattern? Why not
 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel" target="_blank">MVVM</a>, or
 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank">MVC</a>?<br/>
-First of all (as I say before) I want to have an ability to test each part of my app independently. Second important criteria
-that I want to see in my app design is a <a href="https://en.wikipedia.org/wiki/Loose_coupling" target="_blank">loose coupling</a>.
+First of all (as I said before) I want to have an ability to test each part of my app independently. Second important criteria
+is <a href="https://en.wikipedia.org/wiki/Loose_coupling" target="_blank">loose coupling</a>.
 This principles are reachable in MVP and MVVM patterns. MVC is off the menu - controller is a weak part here,
 we need to test it as an Android component (with instrumentation test), not only view.<br/>
 MVVM is better in case of unit testing, but I don't actually like this view-model part - it shares the state to
-pass data and events through self and it's not appears as good object.<br/>
-MVP is the single who passed a test. As for me this pattern has one 
+pass data and events through self and it does not appear as a good object.<br/>
+MVP is the only pattern which passed the test. As for me this pattern has one 
 <a href="http://www.yegor256.com/2015/03/09/objects-end-with-er.html" target="_blank">big problem</a>
 called "presenter" - it should present data
 from model in view and react to user interactions.
@@ -38,10 +38,10 @@ but I think we can get rid of it and save all unit-testing advantages.
 
 
 ## View & Model Services
-MVP intend's us to abstract away from view or model implementations and propagates interface usage instead of
+MVP intends us to abstract away from view or model implementations and propagates interface usage instead of
 concrete view or model classes. 
 So if we want to get rid of presenter we should put view and model at **one level** and think about them
-as two **independent services** - "view service" and "model service". So presenter get down to **communication level** and
+as two **independent services** - "view service" and "model service". So presenter gets down to **communication level** and
 his only responsobility would be to deliver messages from view to model and vice versa.
 In this design the only way to communicate between services is to send messages conformed to public protocol
 and react to them when receiving.
@@ -61,16 +61,16 @@ interface Model {
 In Android world we have to pay attention in which thread code is executing. We can touch widget/controls only on UI-thread
 and we should execute IO operations in background threads to keep user interaction responsive. Usually presenter
 takes care of it. Here it will be handled by communication object too *(I'm not sure that it's right design,
-but I tested this approach and didn't found any problems related to threads)*.<br/>
+but I tested this approach and didn't find any problems related to threads)*.<br/>
 Our services can't directly access each other, the only way to communicate
 is to send and receive messages. Each message will be called on specific thread.
-Lets define generic messages for this services. I'd call them packets here
+Lets define generic messages for these services. I'd call them packets here
 ```java
 interface Packet<T> {
   void apply(T protocol);
 }
 ```
-if model want to ask a view to show a person it can send this packet:
+if model wants to ask a view to show a person it can send this packet:
 ```java
 class PktShow implements Packet<View> {
   
@@ -86,7 +86,7 @@ class PktShow implements Packet<View> {
   }
 }
 ```
-and if user edited person name a view can ask a model to change it with this message:
+and if a user edited a person's name a view can ask a model to change it with this message:
 ```java
 class PktChange implements Packet<Model> {
   
@@ -167,10 +167,10 @@ class OurModel implements Model {
 ```
 
 ## Instead of presenter
-As described previously presenter now have to do only one thing - sending messages from view to model and from model to view.
+As described previously presenter now has to do only one thing - send messages from view to model and from model to view.
 I'd rename it to `Wire`.
-This wire can always been connected to service (read as: encapsulates model-service)
-and be able to provide connection to view (I'll describe why later).
+This wire can always be connected to service (read as: encapsulates model-service)
+and provide connection to view (I'll describe why later).
 I implemented it with rx also:
 ```java
 class Wire {
@@ -206,9 +206,9 @@ class Wire {
 
 ## Connect to framework classes
 All we know about tricky view lifecycle. When we create a part of user interface and
-show it with help of framework, our view have to pass many stages before it will be fully prepared for presenting.<br/>
+show it with help of framework, our view has to pass many stages before it will be fully prepared for presenting.<br/>
 *I would call 'A View' all user inteface stuff like activity, fragment, view or
-whatever you use to interract with a user. It's not so important in terms of MVP.*<br/>
+whatever you use to interact with a user. It's not so important in terms of MVP.*<br/>
 So we can't just put a view as a presenter dependency, we need to setup a presenter later from one of view's 
 lifecycler callback. Also we can't put a presenter as a view dependency because view can be inflated via xml layout and system `LayoutInflater` will instantiate our view through reflection. I know this looks dirty but it's a single path to connect them together.<br/>
 So our draft will look like this:
@@ -320,5 +320,5 @@ public final class ModelTest {
 
 ## --
 I've never used this approach in any big projects, it's just an idea that I'm implementing in some little pet projects.
-Also I'm still thinking about good names for this objects, maybe I'll rename this services, packets and wires into something more self-explanatory.<br/>
+Also I'm still thinking about good names for objects, maybe I'll rename these services, packets and wires into something more self-explanatory.<br/>
 So if you have any feedback with corrections, ideas or critique please write a comment below.

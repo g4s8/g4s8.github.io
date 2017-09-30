@@ -12,6 +12,7 @@
     {% if site.disqus %}
     <link rel="preconnect" href="//{{ site.disqus }}.disqus.com/embed.js" />
     {% endif %}
+    <link rel="dns-prefetch" href="webapps.amihaiemil.com" />
     <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
   </head>
   <body>
@@ -24,8 +25,8 @@
             <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
             <p class="site-description">{{ site.description }}</p>
           </div>
-
           <nav>
+            <div id="charles-search"></div>
             <a href="{{ site.baseurl }}/">Blog</a>
             <a href="{{ site.baseurl }}/about">About</a>
           </nav>
@@ -44,7 +45,7 @@
         </footer>
       </div>
     </div>
-
+    {% include charles.html %}
     {% include analytics.html %}
   </body>
 </html>

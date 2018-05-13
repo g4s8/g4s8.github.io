@@ -1,0 +1,10 @@
+docker:
+  image: "g4s8/rultor:0.5"
+env:
+  MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
+release:
+  script:
+    - 'mvn install -Pqulice -B --quiet'
+    - 'command sudo docker build --tag="your-registry.com/example:$tag" --build-arg="version=$tag" .'
+    - 'command sudo docker push "you-registry.com/example:$tag"'
+    - 'command sudo docker image rm "your-registry/example:$tag"'

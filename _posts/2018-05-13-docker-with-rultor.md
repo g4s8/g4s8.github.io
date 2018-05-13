@@ -50,7 +50,7 @@ instead of daemon unix-socket.
 
 Let say you have maven java project and you want to pack it
 as docker image. First of all you have to write a `Dockerfile`
-(*You can find example project here: [samples/docker-with-rultor](https://github.com/g4s8/g4s8.github.io/samples/docker-with-rultor)*):
+(*You can find example project here: [samples/docker-with-rultor](https://github.com/g4s8/g4s8.github.io/tree/master/samples/docker-with-rultor)*):
 ```
 # Build stage
 FROM g4s8/alpine:jdk-8 as build

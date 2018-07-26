@@ -149,15 +149,44 @@ class RotatedImage implements Image {
   public void render(Canvas cvs) {
     RotatedImage.rotate(this.source.apply(this.name)).render(cvs);
   }
+  
+  private static Image rotate(Image src) {
+    // apply rotation
+  }
 }
 
+/**
+ * Unit test.
+ */
 class RotatedImageTest {
   @Test
   public void canRotate() {
     Canvas canvs = new FakeCanvas();
+    // RotatedImage will use fake implementation for tests here
     new RotatedImage(new FakeImages(), "image").render(canvas);
     // assert canvas ...
   }
 }
+
+/**
+ * Application code.
+ */
+class RotatedImages implements Images {
+
+  private final Func<String, Image> source;
+
+  public RotatedImages(NetworkImages network) {
+    this.source = new SoftFunc<>(name -> network.download(name));
+  }
+
+  @Override
+  public Image image(String name) {
+    // RotatedImage will use cache here
+    return new RotatedImage(this.source, name);
+  }
+}
 ```
+
+Here `RotatedImages` class will use cache based on soft-references
+in application code, but unit test will use fake images without caching.
 

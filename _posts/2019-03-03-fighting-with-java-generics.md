@@ -164,7 +164,7 @@ method because it's final. <br/>
 The issue of this class is it's not possible to call primary constructor directly,
 you'll need additional nested implementation like
 ```java
-public static final FromText extends JoinedText {
+public static final FromText extends JoinedString {
     public FromText(final Text text) {
         super(text);
     }

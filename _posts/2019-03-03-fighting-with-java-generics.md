@@ -11,7 +11,13 @@ In this post I'll show you how I usually deal with this situation.
 
 ## The problem
 
-Let's start with example:
+Let's start with example.
+
+*This is imaginary example, just to illustrate the problem.
+I didn't get it from real code, rather created it as example for this blog post.
+The class `JoinedString` is joining strings (as `String.join`) using `JoinedText` from
+[cactoos](https://github.com/yegor256/cactoos) library, in the example I want to be able
+to create this class from iterable of `String`s and iterable of `Text`s both.*
 ```java
 /**
  * Join all input strings using ',' char to join.

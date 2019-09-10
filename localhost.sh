@@ -15,4 +15,3 @@ if [[ -z "$port" ]]; then
 fi
 
 main $port || exit 1
-

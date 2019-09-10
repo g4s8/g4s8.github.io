@@ -19,7 +19,7 @@ Instead of this data languages should be used for complex data structures,
 it moves data definitions from source code and lets the code to encapsulate
 the data and concentrate on object's behavior.
 
-# Method communication
+## The problem
 
 One of the examples of complex data format is when you have a service with multiple implementation
 which should receive some data to process. Let's take email message with service to send as example

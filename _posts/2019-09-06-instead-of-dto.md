@@ -6,7 +6,7 @@ title: Instead of DTO
 Objects use data messages to communicate with each other,
 it means that object methods can accept some data, but data structure
 sometimes is too complex. When complex data message is designed wrongly
-it tends to low maintainability because it becomes harder to test this code,
+it tends to reduce maintainability because it becomes harder to test this code,
 and harder to read and understand it.
 Many people use
 <a href="https://en.wikipedia.org/wiki/Data_transfer_object" target="_blank">DTOs</a>

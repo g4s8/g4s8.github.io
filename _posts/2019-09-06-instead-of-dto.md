@@ -15,8 +15,8 @@ implement, but this code will be less readable in future and has a lot of
 hidden drawbacks, e.g.
 <a href="https://www.yegor256.com/2016/07/06/data-transfer-object.html" target="_blank">
 broken encapsulation</a>.
-Instead of this, data languages should be used for complex data structures,
-it moves data definitions from source code and lets the code encapsulate
+Instead of this, data languages should be used for complex data structures.
+It moves data definitions from source code and lets the code encapsulate
 the data and concentrate on the object's behavior.
 
 ## The problem

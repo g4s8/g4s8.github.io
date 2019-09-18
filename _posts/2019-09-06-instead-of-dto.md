@@ -79,9 +79,10 @@ about OOP, where encapsulation is one of the
 
 ## Solution
 
-The correct way for this example will be to hide the data by encapsulation it as an object's state, revert
-communication direction (from "service is sending mail" to "mail sends itself via service"), and use data languages to
-communicate with mail services:
+The correct way for this example will be:
+ - hide the data by encapsulation it as an object's state
+ - revert communication direction (from "service is sending mail" to "mail sends itself via service")
+ - and use data languages to communicate with mail services
 
 ```java
 interface Mail {
@@ -113,7 +114,7 @@ The disatvantages are:
 
 It's better to start with `xsd` schema to define data structure, but
 it'll be over-complex for a simple blog post, so I skip it here.
-If you are not famialiar with `xsd` schemas you may start learning them
+If you are not familiar with `xsd` schemas you may start learning them
 here: [www.w3schools.com](https://www.w3schools.com/xml/schema_intro.asp)
 
 To pass it to `MailService` we can use `XML` object from
@@ -269,7 +270,7 @@ the code to support only the new format and apply transformations to convert the
 ## Conclusion
 
 To summarize it all - we're spending more time on implementation, since we need
-to write all these schemas, xml manipulators, etc, but saving much more time
+to write all these schemas, xml manipulators, etc., but saving much more time
 on maintaining the code and making it more readable. But you always should think
 about the balance between the cost of implementing and cost of maintaining:
 I'd never use XML language for simple data messages, e.g. if by business requirements

@@ -3,8 +3,8 @@ layout: post
 title: Instead of DTO
 ---
 
-Objects use data messages to communicate with each other,
-it means that object methods can accept some data, but data structure
+Objects use data messages to communicate with each other.
+It means that object methods can accept some data, but data structure
 sometimes is too complex. When complex data message is designed wrongly
 it tends to reduce maintainability because it becomes harder to test this code,
 and harder to read and understand it.

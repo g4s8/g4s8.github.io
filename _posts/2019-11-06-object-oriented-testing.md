@@ -8,20 +8,20 @@ There're many approaches to write unit tests, but I'll focus on
 writting tests for [EO](https://www.elegantobjects.org/) code, where
 objects are immutable, sealed and behavior-based. These restrictions
 makes unit-testing much easier, than testing procedural code with DTOs,
-getters and mutable states. The only thing, that test should verify in
-object-oriented test is the correct behavior of object with provided
+getters and mutable states. The only thing the test should verify in
+object-oriented test is the correct behavior of the object with provided
 testing state  (fake state).
 Whereas procedural test (I mean test for procedural code)
 should verify the data of class instance after some manipulations
-with injected mock objects simulating behavior.
+with injected mock objects for simulating behavior.
 
 ## Key concepts
 
 Ther're always three players in the unit-test:
- - Target - an object which should be tested
+ - Target - an object to tested
  - Matcher - an object who test the Target
- say what wrong with it if test failed
- - Assertion - a statement, which applies matcher to target
+ and can say what's wrong with target if test failed
+ - Assertion - a statement which applies matcher to target
  and report the result
 
 **Target** should be immutable object with a state and behavior.
@@ -40,9 +40,8 @@ class Book {
 ```
 
 **Matcher** has expected result as a state
-and accepts target to verify it. Matcher
-should be able to explain what's wrong with the target
-when test failed.<br/>
+and it accepts the target to verify it. Also, matcher
+should be able to explain what's wrong with the target.</br>
 *Example:*
 ```java
 class BookHasPage implements Matcher<Book> {
@@ -62,8 +61,13 @@ class BookHasPage implements Matcher<Book> {
 }
 ```
 
+These concepts are implemented quite fine in
+[Hamcrest](http://hamcrest.org/JavaHamcrest/) library.
+
+## Frameworks
+
 With [JUnit](https://junit.org/) tests, programmers are forced to use test methods to
-apply assertions (e.g. using [Hamcrest](http://hamcrest.org/JavaHamcrest/) library):
+apply assertions:
 ```java
 class TestCase {
   @Test
@@ -82,15 +86,15 @@ Valid EO test with JUnit is a
 [single statement of assertion](https://www.yegor256.com/2017/05/17/single-statement-unit-tests.html).
 
 But threre're few issues with test methods which I see:
- - you can't control execution flow (you can actually via some flags in `pom.xml`, but it's black magic)
- - you don't know how, when and why you test will be called.
+ - you can't control execution flow programmatically - you need to use some
+ magic flags in `pom.xml`, but it's black magic)
+ - you don't know how, when and why your test will be called.
  It's like a "Spring" of unit testing.
  The framework find classes dynamically via reflection, parses annotations and decide how
  to call your test methods
- - test case is not an object, but a bunch of procedures. You can't control construction:
+ - test case is not an object, but a bunch of procedures. You can't control
+ test case instantiation:
  you can't inject anything via constructor, you can't use composition, etc.
- - `@Before` and `@After` annoattions are magic code also - you need to learn
- the frawmeowk instead of learning programming language.
  - there're no single entry point (like `main()` method for Java apps),
  you need to rely on names of test classes.
 
@@ -118,7 +122,7 @@ class SimpleTestCase<T> implements TestCase {
 ```
 
 I saw similar [idea](https://www.pragmaticobjects.com/chapters/003_reusable_assertions.html)
-by [@skapral](https://github.com/skapral), but it solves only the half of JUnit issues.
+by [@skapral](https://github.com/skapral), but it solves only the half of issues.
 There're no test methods anymore, but we stil need to rely on framework's black magic
 and create test classes for it in a hope that JUnit will find it and run as expected.
 
@@ -128,27 +132,25 @@ composition of test cases with decorators. Something like this:
 class MainTest extends TestCase.Wrap {
   public MainTest() {
     super(
-      new XmlReportingTest(
-        new SequentialTests(
-          new ParallelTests(
-            new FooTest(),
-            new ParTest(),
-            new VerboseTest(
-              new BazTest()
-            )
-          ),
-          new TestIf(
-            () -> System.getProperty("it-tests-enabled") == true
-            new IntegrationTests()
+      new SequentialTests(
+        new ParallelTests(
+          new FooTest(),
+          new ParTest(),
+          new VerboseTest(
+            new BazTest()
           )
+        ),
+        new TestIf(
+          () -> System.getProperty("it-tests-enabled") == true
+          new IntegrationTests()
         )
       )
     );
   }
 
-  // it's like a "public static void main()"
+  // it's like a `public static void main()`
   public static void test() {
-    new MainTest().run();
+    new MainTest().run(new XmlReport());
   }
 }
 ```
@@ -159,11 +161,11 @@ Using composition I'm getting the full controll of testing flow:
  - I can use conditions right in composition structure
  - I can change reporting behavior
  - I can do anything with my unit tests, because the test frawmeork is
- extensible now.
+ extensible now
 
 This kind of frawmeworks doesn't work as a black-box, but providing API
-to help me (programmer) to construct tests for the project by myself.
+to help me to construct tests for the project by myself.<br/>
 I created experimental project [g4s8/oot](https://github.com/g4s8/oot)
-with that framework, it should replace JUnit sooner or later. You can
+for that framework, it should replace JUnit sooner or later. You can
 express your opinion in the comments to this blog post or by
 [submitting a ticket](https://github.com/g4s8/oot/issues/new) for that repo.

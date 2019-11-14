@@ -19,7 +19,7 @@ with injected mock objects for simulating behavior.
 
 There are always three players in the unit-test:
  - Target - an object which should be tested
- - Matcher - an object which test the Target
+ - Matcher - an object which tests the Target
  and can say what's wrong with target if test failed
  - Assertion - a statement which applies the matcher to the target
  and report the result

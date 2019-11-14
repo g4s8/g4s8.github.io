@@ -4,10 +4,10 @@ title: Testing Object Oriented Code
 ---
 
 Any self-respecting programmer must have a blog post about unit testing.
-There're many approaches to write unit tests, but I'll focus on
+There are many approaches to write unit tests, but I'll focus on
 writing tests for [EO](https://www.elegantobjects.org/) code, where
 objects are immutable, sealed and behavior-based. These restrictions
-makes unit-testing much easier than testing procedural code with DTOs,
+make unit-testing much easier than testing procedural code with DTOs,
 getters and mutable states. The only thing that an object oriented test
 should verify is the correct behavior of an object with the provided
 testing state  (fake state).
@@ -22,7 +22,7 @@ There are always three players in the unit-test:
  - Matcher - an object which tests the Target
  and can say what's wrong with target if test failed
  - Assertion - a statement which applies the matcher to the target
- and report the result
+ and reports the result
 
 **Target** should be an immutable object with a state and behavior.
 The unit test may inject the fake state, because it should
@@ -85,7 +85,7 @@ using assertion.
 Valid EO test with JUnit is a 
 [single statement of assertion](https://www.yegor256.com/2017/05/17/single-statement-unit-tests.html).
 
-But threre are a few issues with test methods which I see:
+But there are are a few issues with test methods which I see:
  - you can't control execution flow programmatically - you need to use some
  magic flags in `pom.xml`, but it's black magic)
  - you don't know how, when and why your test will be called.
@@ -123,7 +123,7 @@ class SimpleTestCase<T> implements TestCase {
 
 I saw a similar [idea](https://www.pragmaticobjects.com/chapters/003_reusable_assertions.html)
 by [@skapral](https://github.com/skapral), but it solves only half of issues.
-There're no test methods anymore, but we stil need to rely on framework's black magic
+There are no test methods anymore, but we stil need to rely on framework's black magic
 and create test classes for it in a hope that JUnit will find it and run as expected.
 
 What I want to see in my test cases is a single entry point and
